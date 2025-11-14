@@ -41,8 +41,30 @@ python validate.py path/to/project.xml
 python validate.py path/to/project.xml path/to/project_repaired.xml
 ```
 
-- The first form runs validation only and exits with status 0 on success.
-- The second form attempts automatic repairs and writes a repaired XML plus a `_repair.log` file with details.
+
+### Docker
+
+You can build a small container image that bundles the validator and run it without installing Python or dependencies on the host.
+
+Build the image from the project root:
+
+```bash
+docker build -t msproject-validator:latest .
+```
+
+Run the validator (mount your working directory so input/output are accessible):
+
+```bash
+# validation-only
+docker run --rm -v "$(pwd)":/data msproject-validator:latest /data/project.xml
+
+# repair mode (writes /data/project_repaired.xml and /data/project_repaired_repair.log)
+docker run --rm -v "$(pwd)":/data msproject-validator:latest /data/project.xml /data/project_repaired.xml
+```
+
+Notes:
+- The container image installs dev dependencies (pydocstyle/pytest) for convenience — if you want a smaller runtime-only image I can add a multi-stage Dockerfile that leaves dev tools out of the final image.
+- If Docker is not available on your machine, you can still use the virtualenv at `/media/jare16/4TBSSD/.venv` or create one inside the project (`python -m venv .venv`).
 
 ### Example output
 
