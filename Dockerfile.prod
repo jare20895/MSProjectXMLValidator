@@ -1,0 +1,36 @@
+### Multi-stage Dockerfile: builds a wheel in a builder stage and installs it into a small runtime image
+
+FROM python:3.12-slim AS builder
+
+# Install build dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /src
+
+# Copy pyproject and requirements first to leverage Docker cache
+COPY pyproject.toml requirements.txt requirements-dev.txt ./
+
+# Copy the package source
+COPY msproject_validator ./msproject_validator
+COPY validate.py ./
+
+# Ensure pip/setuptools/wheel are up to date and build a wheel
+RUN python -m pip install --upgrade pip setuptools wheel
+RUN python -m pip wheel . -w /wheels
+
+
+FROM python:3.12-slim AS runtime
+WORKDIR /app
+
+# Minimal runtime deps (none currently) — update requirements.txt if you add runtime libs
+COPY --from=builder /wheels /wheels
+
+# Install the wheel into the runtime image
+RUN python -m pip install --no-cache-dir /wheels/*.whl
+
+# Copy the CLI so it is available for direct execution (not strictly required if entrypoint uses installed console script)
+COPY validate.py ./
+
+ENTRYPOINT ["python", "validate.py"]
