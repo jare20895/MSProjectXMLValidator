@@ -1,43 +1,66 @@
-# MSProject XML Validator
+# MSProjectXMLValidator
 
-This repository contains a small package, `msproject_validator`, which validates
-and optionally repairs Microsoft Project XML files so they import cleanly into
-MS Project.
+**Validate XML project files for easier import to Microsoft Project from other project management software.**
 
-Quick start
+## Overview
 
-From the repository root:
+Migrating projects from tools like Smartsheet, Jira, Trello, Asana, Primavera, and others into Microsoft Project (`.mpp`) often means dealing with `.xml` files. Invalid formatting, missing fields, or structure errors can cause import failures or data loss. **MSProjectXMLValidator** is a Python tool to validate your XML project files and ensure smoother migration and import into Microsoft Project.
 
-Validate only (no changes written):
+## Features
 
+- Checks for correct structure and required fields
+- Highlights format issues that can cause Microsoft Project imports to fail
+- Easy command-line usage
+- Extendable for custom validations
+
+## Getting Started
+
+### Prerequisites
+- Python 3.x
+
+### Installation
+Clone the repository:
 ```bash
-python3 validate.py path/to/input.xml
+git clone https://github.com/jare20895/MSProjectXMLValidator.git
+cd MSProjectXMLValidator
+```
+Install dependencies (if applicable):
+```bash
+pip install -r requirements.txt
 ```
 
-Validate and attempt repairs (writes repaired XML + repair log):
+### Usage
 
 ```bash
-python3 validate.py path/to/input.xml path/to/output_repaired.xml
+python msproject_xml_validator.py --input project.xml
 ```
 
-Unit tests
+- `--input` specifies the XML file to validate.
+- Reports issues/warnings in the command line.
 
-Run the unit tests (ensure the project root is on PYTHONPATH):
+### Example output
 
-```bash
-PYTHONPATH=AIProjects/Coding/MSProjectXMLValidator python3 -m unittest discover -v AIProjects/Coding/MSProjectXMLValidator/tests
+```
+Validating project.xml...
+[ERROR] Task missing required UID field at line 78
+[WARNING] Resource has blank Name at line 104
+Validation completed. 2 errors, 1 warning.
 ```
 
-Docstring style
+## Typical Use Cases
 
-We use `pydocstyle` to enforce docstring conventions; run it with the
-configured virtualenv Python:
+- Migrating from Smartsheet, Jira, Asana, Trello, etc. to Microsoft Project
+- Checking exported XML before importing
+- Quickly detect format/submission errors for .xml files
 
-```bash
-/media/jare16/4TBSSD/.venv/bin/python -m pydocstyle msproject_validator
-```
+## Contributing
 
-Docs
+Contributions and bug reports are welcome! Please open an issue or PR. See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
-See `docs/msproject_validator.md` for a short usage note and `docs/implementation.md`
-for the implementation mapping.
+## License
+
+[MIT License](LICENSE)
+
+## Related Topics
+
+`microsoft-project` `xml` `project-management` `data-migration` `file-validator` `interoperability` `python`
