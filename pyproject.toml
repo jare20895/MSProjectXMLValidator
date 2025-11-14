@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "msproject_validator"
+version = "0.1.0"
+description = "MS Project XML validator and repair tool"
+readme = "msproject_validator/README.md"
+requires-python = ">=3.8"
+authors = [ { name = "jare20895" } ]
+license = { text = "MIT" }
+dependencies = []
+
+[project.scripts]
+msproject-validate = "validate:main"
+
+[tool.setuptools]
+packages = ["msproject_validator"]

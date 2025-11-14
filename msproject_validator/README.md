@@ -31,12 +31,18 @@ pip install -r requirements.txt
 
 ### Usage
 
+Run the CLI directly from the repository root:
+
 ```bash
-python msproject_xml_validator.py --input project.xml
+# validation-only
+python validate.py path/to/project.xml
+
+# attempt automatic repairs and write repaired output + repair log
+python validate.py path/to/project.xml path/to/project_repaired.xml
 ```
 
-- `--input` specifies the XML file to validate.
-- Reports issues/warnings in the command line.
+- The first form runs validation only and exits with status 0 on success.
+- The second form attempts automatic repairs and writes a repaired XML plus a `_repair.log` file with details.
 
 ### Example output
 
